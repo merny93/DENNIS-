@@ -203,25 +203,29 @@ task main()
 		}
 
 		//Now, for the drill activation
-		if (vexRT[Btn7U]==1){
+		if (buttonBumped(Btn7U)){
 			drillsAreOn=true;
 			setSpeed=maxDesiredPower;
 			accelerationWheel=5;
 			timeDelay=500;
 			changeWheelSpeed();
 		}
-		if (vexRT[Btn7D]==1){
+		if (buttonBumped(Btn7D)){
 			//drillsAreOn=false;
 			accelerationWheel=2;
 			timeDelay=250;
 			setSpeed=0;
 			changeWheelSpeed();
 		}
-		if (vexRT[Btn7R]==1){
+		if (buttonBumped(Btn7R)){
 			maxDesiredPower+=1;
+			setSpeed=maxDesiredPower;
+			changeWheelSpeed();
 		}
-		if (vexRT[Btn7L]==1){
+		if (buttonBumped(Btn7L)){
 			maxDesiredPower-=1;
+			setSpeed=maxDesiredPower;
+			changeWheelSpeed();
 		}
 
 		//Lift and lower frame
