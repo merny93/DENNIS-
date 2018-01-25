@@ -28,7 +28,7 @@
 #define ANGLESPEED 70
 #define LIFTSPEED 127
 #define ROTSPEED 127
-int drillSpeed = 100; // TODO: calibrate
+float drillSpeed = 100.0; // TODO: calibrate
 
 
 
@@ -37,16 +37,16 @@ void moveRobot()
 	int control[3];
   control[0] = vexRT[Ch3];
   control[1] = vexRT[Ch1];
-  control[2] = vexRT[Ch4]/2;
+  control[2] = vexRT[Ch4];
   int frontLeftPower = 0;
   int frontRightPower = 0;
   int backLeftPower = 0;
   int backRightPower = 0;
 
-  frontLeftPower = 0 - control[1] - control[0] + pow(control[2], 3) / 16129;
-  frontRightPower = 0 - control[1] + control[0] + pow(control[2], 3) / 16129;
-  backLeftPower = 0 - control[1] - control[0] - pow(control[2], 3) / 16129;
-  backRightPower = 0 - control[1] + control[0] - pow(control[2], 3) / 16129;
+  frontLeftPower = 0 - control[1] - control[0] + control[2];
+  frontRightPower = 0 - control[1] + control[0] + control[2];
+  backLeftPower = 0 - control[1] - control[0] - control[2];
+  backRightPower = 0 - control[1] + control[0] - control[2];
 
   motor[frontLeft] = frontLeftPower;
   motor[frontRight] = frontRightPower;
@@ -105,9 +105,9 @@ void moveArm(int btn)
 {
 
   if (btn == 1)
-    motor[clawAngle] = ANGLESPEED;
+    motor[clawAngle] = ANGLESPEED*1.5;
   else
-    motor[clawAngle] = (ANGLESPEED) * (-1);
+    motor[clawAngle] = (ANGLESPEED) * (-0.2);
 
   return;
 }
@@ -142,7 +142,7 @@ void stopPusher()
 void controlDrill()
 {
     if (abs(vexRT[Ch2]) > DEADZONE + 30)
-      drillSpeed += sign(vexRT[Ch2]);
+      drillSpeed = drillSpeed + (float)(sgn(vexRT[Ch2]) / (float)(25.0));
 
     if (drillSpeed > 127)
       drillSpeed = 127;
