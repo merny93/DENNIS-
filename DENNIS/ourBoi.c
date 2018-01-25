@@ -43,10 +43,10 @@ void moveRobot()
   int backLeftPower = 0;
   int backRightPower = 0;
 
-  frontLeftPower = 0 - control[1] - control[0] + control[2];
-  frontRightPower = 0 - control[1] + control[0] + control[2];
-  backLeftPower = 0 - control[1] - control[0] - control[2];
-  backRightPower = 0 - control[1] + control[0] - control[2];
+  frontLeftPower = 0 - control[1] - control[0] + pow(control[2], 3) / 16129;
+  frontRightPower = 0 - control[1] + control[0] + pow(control[2], 3) / 16129;
+  backLeftPower = 0 - control[1] - control[0] - pow(control[2], 3) / 16129;
+  backRightPower = 0 - control[1] + control[0] - pow(control[2], 3) / 16129;
 
   motor[frontLeft] = frontLeftPower;
   motor[frontRight] = frontRightPower;
@@ -142,7 +142,7 @@ void stopPusher()
 void controlDrill()
 {
     if (abs(vexRT[Ch2]) > DEADZONE + 30)
-      drillSpeed += vexRT[Ch2] / abs(vexRT[Ch2]) * 3;
+      drillSpeed += sign(vexRT[Ch2]);
 
     if (drillSpeed > 127)
       drillSpeed = 127;
