@@ -1,3 +1,4 @@
+#pragma config(Sensor, dgtl1,  buzzer,         sensorDigitalOut)
 #pragma config(Motor,  port1,           footballRotate, tmotorServoContinuousRotation, openLoop)
 #pragma config(Motor,  port2,           backRight,     tmotorServoContinuousRotation, openLoop)
 #pragma config(Motor,  port3,           frontRight,    tmotorServoContinuousRotation, openLoop)
@@ -105,9 +106,9 @@ void moveArm(int btn)
 {
 
   if (btn == 1)
-    motor[clawAngle] = ANGLESPEED*1.5;
+    motor[clawAngle] = 127;
   else
-    motor[clawAngle] = (ANGLESPEED) * (-0.2);
+    motor[clawAngle] = -80;
 
   return;
 }
@@ -177,13 +178,25 @@ void stopSorter()
 	motor[footballRotate] = 0;
 }
 
+void buzzerOn()
+{
+	SensorValue[buzzer] = 1;
+}
+
+void buzzerOff()
+{
+	SensorValue[buzzer] = 0;
+}
+
+
+
 // Acts on states
 
 
 // Sets states
 int * getControllerState()
 {
-  int states[10];
+  int states[11];
 
   // Drive forward/back
   if (abs(vexRT[Ch3]) > DEADZONE)
@@ -249,6 +262,12 @@ int * getControllerState()
   else
     states[9] = 0;
 
+  //buzzer
+  if (vexRT[Btn7U])
+  	states[10] = 1;
+ 	else
+ 		states[10] = 0;
+
   return states;
 }
 
@@ -301,6 +320,11 @@ void actOnController()
   else
     stopSorter();
 
+  //buzzer
+  if (state[10] == 1)
+  	buzzerOn();
+ 	else
+ 		buzzerOff();
 
   return;
 }
